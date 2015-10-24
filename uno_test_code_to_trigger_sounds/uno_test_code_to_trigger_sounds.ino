@@ -5,7 +5,7 @@ int isplaying;
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
-    
+pinMode(23, INPUT_PULLUP);    
 }
 
 int areyouplaying() {
@@ -21,7 +21,8 @@ int areyouplaying() {
 }
 
 void loop() {
-  
+
+while(digitalRead(23));  
   song = 0;
   Serial1.write(song);
     Serial.println("Welcome to Star Wars Day....");
@@ -29,10 +30,10 @@ void loop() {
 //  while(isplaying == 1){
 //    isplaying=Serial1.read();
 //  }
-  areyouplaying();
+  //areyouplaying();
   
   delay(500);
-  
+  while(digitalRead(23));
   song = 1;
   Serial1.write(song);
   Serial.println("Droid Maintaince testing....");
@@ -47,10 +48,10 @@ void loop() {
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
-  areyouplaying();
+  //areyouplaying();
   
   delay(500);
-  
+  while(digitalRead(23));
   Serial.println("I am Hero Junior Robot, and one of my favorite movies");
   Serial.println("is Star Wars,   I wish I could fight against ");
   song = 2;
@@ -60,8 +61,9 @@ void loop() {
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
-  areyouplaying();
+  //areyouplaying();
   delay(500);
+  while(digitalRead(23));
   song = 3;
   Serial1.write(song);
   Serial.println("R 2 D 2 and C 3 P O ");
@@ -69,8 +71,9 @@ void loop() {
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
-  areyouplaying();
+  //areyouplaying();
   delay(500);
+  while(digitalRead(23));
   Serial.println("But I must admit..... ");
   Serial.println("I am a little afraid of......");
   song = 4;
@@ -81,8 +84,9 @@ void loop() {
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
-  areyouplaying();
+  //areyouplaying();
   delay(500);
+  while(digitalRead(23));
    //move robot forward a little bit
   Serial.println("Where's my Blaster.....");
   song = 5;
@@ -93,8 +97,9 @@ void loop() {
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
-  areyouplaying();
+  //areyouplaying();
   delay(500);
+  while(digitalRead(23));
   song = 6;
   Serial1.write(song);
   Serial.println("I wish Droids where aloud in here....");
@@ -105,8 +110,9 @@ void loop() {
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
-  areyouplaying();
+  //areyouplaying();
   delay(500);
+  while(digitalRead(23));
   song = 7;
   Serial1.write(song);
   Serial.println("May the Force Be With You....");
@@ -114,8 +120,9 @@ void loop() {
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
-  areyouplaying();
+  //areyouplaying();
   delay(500);
+  while(digitalRead(23));
   Serial.println("Random Star Wars Sounds From Keypad");
   delay(30000);
 }

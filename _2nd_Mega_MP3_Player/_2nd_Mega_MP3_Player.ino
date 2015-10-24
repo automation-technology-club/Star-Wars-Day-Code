@@ -28,7 +28,7 @@ void setup()
   RED_LED_ON();//light red LED
 
 //pinMode(22, INPUT); //change track trigger
-//pinMode(23, OUTPUT); //track playing
+pinMode(23, OUTPUT); //track playing
 
 }
 
@@ -66,12 +66,13 @@ void loop()
 int changetrack() {
   isplaying = 1;
   Serial1.write(isplaying);
-  
+  digitalWrite(23, HIGH);
   switch (song) {
     case 0:
     while(playFile("starwars.mp3")>1); //44 seconds.
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
   //delay(44000); 
     Serial.println("Star Wars Done.");
     break;
@@ -79,6 +80,7 @@ int changetrack() {
     while(playFile("rebel.mp3")>1); //4 minutes During Self Check routine
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
     //delay(240000);
     Serial.println("Rebel Theme Done");
     break;
@@ -86,6 +88,7 @@ int changetrack() {
     while(playFile("imperial.mp3")>1); // 37 seconds
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
     //delay(37000);
     Serial.println("Imperial March Done!");
     break;
@@ -96,6 +99,7 @@ int changetrack() {
     //delay(4000);
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
     Serial.println("Random Droid Sounds Done");
     break;
     case 4:
@@ -105,6 +109,7 @@ int changetrack() {
     //delay(6000);
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
     Serial.println("Darth Vader -Scared Droid Done");
     break;
     case 5:
@@ -114,6 +119,7 @@ int changetrack() {
     //delay(1500);
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
     Serial.println("Blaster Done");
     break;
     case 6:
@@ -122,6 +128,7 @@ int changetrack() {
     //delay(167000);
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
     Serial.println("Dance Break Done!");
     break;
     case 7:
@@ -129,6 +136,7 @@ int changetrack() {
     //delay(2500);
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
     Serial.println("May The Force Be With You.");
     break;
   }
@@ -136,6 +144,7 @@ int changetrack() {
   //while(1);
    isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW);
 }
 
 
