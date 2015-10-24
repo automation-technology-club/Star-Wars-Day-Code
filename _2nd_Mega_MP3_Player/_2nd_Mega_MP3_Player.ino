@@ -76,7 +76,7 @@ int changetrack() {
     Serial.println("Star Wars Done.");
     break;
     case 1:
-    while(playFile("rebel-theme.mp3")>1); //4 minutes During Self Check routine
+    while(playFile("rebel.mp3")>1); //4 minutes During Self Check routine
      isplaying = 0;
   Serial1.write(isplaying);
     //delay(240000);
@@ -110,14 +110,14 @@ int changetrack() {
     case 5:
     while(playFile("blaster.mp3")>1); //<1 second
     while(playFile("blaster.mp3")>1);
-    while(playFile("blaster.mp3")>1);
+    //while(playFile("blaster.mp3")>1);
     //delay(1500);
      isplaying = 0;
   Serial1.write(isplaying);
     Serial.println("Blaster Done");
     break;
     case 6:
-    while(playFile("star-wars-cantina-song.mp3")>1); //2 mintues 47 seconds
+    while(playFile("cantina.mp3")>1); //2 mintues 47 seconds
     //dance break;
     //delay(167000);
      isplaying = 0;

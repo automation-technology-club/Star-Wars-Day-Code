@@ -31,6 +31,8 @@ void loop() {
 //  }
   areyouplaying();
   
+  delay(500);
+  
   song = 1;
   Serial1.write(song);
   Serial.println("Droid Maintaince testing....");
@@ -47,6 +49,8 @@ void loop() {
   //}
   areyouplaying();
   
+  delay(500);
+  
   Serial.println("I am Hero Junior Robot, and one of my favorite movies");
   Serial.println("is Star Wars,   I wish I could fight against ");
   song = 2;
@@ -57,6 +61,7 @@ void loop() {
   //  isplaying=Serial1.read();
   //}
   areyouplaying();
+  delay(500);
   song = 3;
   Serial1.write(song);
   Serial.println("R 2 D 2 and C 3 P O ");
@@ -65,7 +70,7 @@ void loop() {
   //  isplaying=Serial1.read();
   //}
   areyouplaying();
-  
+  delay(500);
   Serial.println("But I must admit..... ");
   Serial.println("I am a little afraid of......");
   song = 4;
@@ -77,6 +82,7 @@ void loop() {
   //  isplaying=Serial1.read();
   //}
   areyouplaying();
+  delay(500);
    //move robot forward a little bit
   Serial.println("Where's my Blaster.....");
   song = 5;
@@ -88,7 +94,7 @@ void loop() {
   //  isplaying=Serial1.read();
   //}
   areyouplaying();
-  
+  delay(500);
   song = 6;
   Serial1.write(song);
   Serial.println("I wish Droids where aloud in here....");
@@ -100,7 +106,7 @@ void loop() {
   //  isplaying=Serial1.read();
   //}
   areyouplaying();
-  
+  delay(500);
   song = 7;
   Serial1.write(song);
   Serial.println("May the Force Be With You....");
@@ -109,7 +115,7 @@ void loop() {
   //  isplaying=Serial1.read();
   //}
   areyouplaying();
-  
+  delay(500);
   Serial.println("Random Star Wars Sounds From Keypad");
   delay(30000);
 }
