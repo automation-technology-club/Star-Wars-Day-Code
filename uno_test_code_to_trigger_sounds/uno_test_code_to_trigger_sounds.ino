@@ -51,19 +51,24 @@ Serial2.print("Welcome to Star Wars Day\n");
   Serial.println("Rebel Music should be playing for this routine.");
   Serial2.print("Battery Voltage Test....\n");
   Serial.println("Battery Voltage Test....");
+  delay(7000); //probably longer than test takes
   while(digitalRead(25));
   Serial.println("Ultrasonic Testing.....");
   Serial2.print("Ultrasonic testing....\n");
+  delay(7000); //probably longer than test takes
   while(digitalRead(25));
-  Serial.println("Sound Sensor Testing.... will fail, too much noise");
+  //Serial.println("Sound Sensor Testing.... will fail, too much noise");
   Serial2.print("Testing Drive Motor....\n");
-  Serial.println("Drive motor Testing....");
+    Serial.println("Drive motor Testing....");
+    delay(30000); //about a minute and half
   while(digitalRead(25));
-  Serial.println("Test Leds");
-  Serial2.print("Testing Leds.\n");
+  Serial.println("Test L E Ds");
+  Serial2.print("Testing LEDs.\n");
+  delay(7000); //probably longer than it takes
   while(digitalRead(25));
-  Serial2.print("Cyclon LED Testing.\n");
-  Serial.println("cyclon Led testing...");
+  Serial2.print("Cylon L E D Testing.\n");
+    Serial.println("cylon LED testing...");
+  delay(7000); //don't know
   while(digitalRead(25));
   //isplaying=Serial1.read();
   //while(isplaying == 1){
@@ -77,37 +82,40 @@ Serial2.print("Welcome to Star Wars Day\n");
   Serial2.print("I am a Hero Junior Robot, and one of my favorite movies\n");
   Serial.println("I am Hero Junior Robot, and one of my favorite movies");
     while(digitalRead(25));
-  Serial2.print("is Star Wars,  I wish I could fight against\n ");
-  Serial.println("is Star Wars,   I wish I could fight against ");
+  Serial2.print("is Star Wars,  I wish I could fight against the empire.\n ");
+  Serial.println("is Star Wars,   I wish I could fight against the empire.");
+    while(digitalRead(25));
     song = 2;
   Serial1.write(song);
-  while(digitalRead(25));
-  Serial2.print("the Empire alongside my friends\n");
-  Serial.println("the Empire alongside my friends.");
-  
+  while(digitalRead(23));
+  //Serial2.print("the Empire, alongside my friends\n");
+  //Serial.println("the Empire alongside my friends.");
+  //while(digitalRead(25));
   //isplaying=Serial1.read();
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
   //areyouplaying();
-  delay(500);
+  //delay(500);
   while(digitalRead(23));
+  delay(500);
   while(digitalRead(25));
     song = 3;
   Serial1.write(song);
-  Serial2.print("R 2 D 2 and C 3 P O\n");
-  Serial.println("R 2 D 2 and C 3 P O ");
+  Serial2.print("with my friends C 3 P O and R 2 D 2\n");
+  Serial.println("with my friends C 3 P O and R 2 D 2");
   //isplaying=Serial1.read();
   //while(isplaying == 1){
   //  isplaying=Serial1.read();
   //}
   //areyouplaying();
-  delay(500);
+  delay(4000);
   while(digitalRead(23));
   while(digitalRead(25));
   Serial2.print("But I must admit,  I am a little afraid of\n");
   Serial.println("But I must admit..... ");
   Serial.println("I am a little afraid of......");
+  delay(500);
   song = 4;
   Serial1.write(song);
   //backup robot drive backward a little bit
@@ -139,11 +147,12 @@ Serial2.print("Welcome to Star Wars Day\n");
   delay(500);
   while(digitalRead(23));
   
+  delay(4000);
   song = 6;
   Serial1.write(song);
   while(digitalRead(25));
-  Serial2.print("Oh The Cantina Bar - I wish Droids where alound in there...\n");
-  Serial.println("Oh The Catina Bar - I wish Droids where aloud in there....");
+  Serial2.print("Look it's The Cantina Bar - I wish Droids where alound in there...\n");
+  Serial.println("Look it's The Catina Bar - I wish Droids where aloud in there....");
   while(digitalRead(25));
   Serial2.print("I would do my Droid Dancing....\n");
   Serial.println("I'd do my Droid Dancing.....");
