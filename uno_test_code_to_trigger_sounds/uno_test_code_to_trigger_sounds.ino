@@ -63,7 +63,7 @@ Serial2.print("Welcome to Star Wars Day\n");
     delay(30000); //about a minute and half
   while(digitalRead(25));
   Serial.println("Test L E Ds");
-  Serial2.print("Testing LEDs.\n");
+  Serial2.print("Testing L.E.Ds.\n");
   delay(7000); //probably longer than it takes
   while(digitalRead(25));
   Serial2.print("Cylon L E D Testing.\n");

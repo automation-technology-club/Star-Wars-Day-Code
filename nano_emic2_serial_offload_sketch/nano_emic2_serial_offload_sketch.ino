@@ -16,6 +16,8 @@
 EMIC2 emic;  // Creates an instance of the EMIC2 library
 
 String Data = "";
+float wordCount = 0;
+float charCount = 0;
 
 void setup()
 
@@ -29,10 +31,11 @@ void setup()
     emic.setVoice(0);  // Sets the voice (9 choices: 0 - 8)
     pinMode(12, OUTPUT);
     emic.setVolume(10);
-    Data = "Testing Testing.";
-    speak();
-    Data = "3.14";
-    speak();
+    //Data = "Testing Testing.";
+    //speak();
+    //Data = "3.14";
+    //speak();
+    emic.setRate(175);
     Serial.flush();
 }
 
@@ -45,6 +48,8 @@ if (Serial.available() > 0) {
   char character = Serial.read();
   Serial.println(character);
   Data = Data + character;
+  charCount ++;
+    if (character == ' ') {wordCount ++;}
     if (character == '\n') {
 	Serial.println(Data);
 	speak();
@@ -54,10 +59,15 @@ if (Serial.available() > 0) {
 }
 
 void speak() {
-
+  digitalWrite(13, HIGH);
   digitalWrite(12, HIGH);
   emic.speak(Data);
+  float time = (75 * (wordCount+1))/60;
+  delay(time*500);
+  wordCount = 0;
+  charCount = 0;
   digitalWrite(12, LOW);
+  digitalWrite(13, LOW);
     }
 
 

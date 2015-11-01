@@ -30,6 +30,8 @@ void setup()
 //pinMode(22, INPUT); //change track trigger
 pinMode(23, OUTPUT); //track playing
 
+randomSeed(382873);
+
 }
 
 
@@ -138,6 +140,17 @@ int changetrack() {
   Serial1.write(isplaying);
   digitalWrite(23, LOW);
     Serial.println("May The Force Be With You.");
+    break;
+    case 8:
+    Serial.println("Random Sound");
+    String r;
+    int rx = random(0,37);
+    r = String(rx);
+    r = r + ".mp3";
+    char ran[10];
+    r.toCharArray(ran,10);
+    while(playFile(ran)>1);
+    digitalWrite(23, LOW);
     break;
   }
 //  song = song + 1;
