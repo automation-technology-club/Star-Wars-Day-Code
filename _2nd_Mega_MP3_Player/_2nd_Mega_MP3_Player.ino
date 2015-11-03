@@ -15,7 +15,7 @@ int isplaying;
 void setup()
 {
   Serial.begin(9600);
-  Serial1.begin(9600);
+  Serial2.begin(9600);
     
   InitSPI();
   InitIOForVs10xx();
@@ -38,9 +38,10 @@ randomSeed(382873);
 void loop()
 { 
 
-  Serial1.flush();
-  if(Serial1.available()) {
-  song=Serial1.read();
+  Serial2.flush();
+  if(Serial2.available()) {
+  song=Serial2.read();
+  Serial.println((char)song);
   changetrack();
   }
   
@@ -66,7 +67,7 @@ void loop()
 }
 
 int changetrack() {
-  isplaying = 1;
+  isplaying = 1;qa
   Serial1.write(isplaying);
   digitalWrite(23, HIGH);
   switch (song) {
