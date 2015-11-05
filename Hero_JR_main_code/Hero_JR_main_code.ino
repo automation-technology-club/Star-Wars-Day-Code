@@ -9,7 +9,7 @@ Only optional hardware may need to be added.
 Some type of wireless device, a RTC, and a PIR sensor.
 */
 
-/* Code Version 110315.1133 */
+/* Code Version 110415.1544 */
 
 /* Copyright 2015 LeRoy Miller
 This program is free software: you can redistribute it and/or modify
@@ -151,6 +151,8 @@ int r;
 int hearts[13], clubs[13], spades[13], diamonds[13];
 //end card games
 
+#define DS3231_I2C_ADDRESS 0x68 //DS3231 Real Time Clock (RTC) address
+
 //added for Star Wars Day
 int song;
 unsigned long swdelay = 30000; //used for random sounds
@@ -162,7 +164,8 @@ int voltage;
 	
 void setup() 
 {   
-   
+
+Wire.begin();   
 Serial.begin(9600);
 Serial1.begin(9600); //Serial 1 is used for the eMIC 2 
 Serial3.begin(9600); //mp3 player
@@ -201,13 +204,19 @@ delay(3000); //wait for eMIC 2 to come online
    myStepper.setSpeed(75);
    randomSeed(light()+ping()+millis());
    
+   // DS3231 seconds, minutes, hours, day, date, month, year
+  //setDS3231time(00,05,16,4,4,11,15);
+  displayTime();
+   while(digitalRead(23));
+   settime();
+   
 } 
 
 void (* resetFunc) (void) = 0;
 
 void loop() 
 {       
-	
+	//displayTime();
 	//spin();
 	//while(1);
 	
@@ -225,38 +234,45 @@ Serial3.write(song);
   Serial.println("Droid Maintaince testing....");
   while(digitalRead(23));
   Serial.println("Rebel Music should be playing for this routine.");
+ // displayTime();
+ // while(digitalRead(23));
+ // delay(4000);
   Serial1.print("Battery Voltage Test....\n");
   Serial.println("Battery Voltage Test....");
   voltage = volt();
+  
   while(digitalRead(23));
 	speak("The current battery voltage is ");
-	while(digitalRead(23));
+	delay(4000);
+		while(digitalRead(23));
 	speakint(voltage);
 	//while(digitalRead(23));
 	speak(" volts. ");
 	while(digitalRead(23));
-  delay(3000); //probably longer than test takes
+  delay(4000); //probably longer than test takes
   while(digitalRead(23));
   Serial.println("Ultrasonic Testing.....");
   Serial1.print("Ultrasonic testing....\n");
   pings = ping();
   while(digitalRead(23));
+  delay(4000);
 	speak("Current Distance from closest object is ");
 	while(digitalRead(23));
 	speakint(pings);
 	//while(digitalRead(23));
 	speak(" inches.");
 	while(digitalRead(23));
-  delay(3000); //probably longer than test takes
+  delay(4000); //probably longer than test takes
   //while(digitalRead(23));
   Serial1.print("Testing Light Sensor... No Light Sensor, not saber!");
   while(digitalRead(23));
   lights = light();
 	speak("Current light reading is ");
 	while(digitalRead(23));
+	delay(4000);
 speakint(lights);
 while(digitalRead(23));
-delay(3000);
+delay(4000);
   //Serial.println("Sound Sensor Testing.... will fail, too much noise");
   Serial1.print("Testing Drive Motor....\n");
     Serial.println("Drive motor Testing....");
@@ -302,7 +318,7 @@ delay(3000);
   while(digitalRead(23));
   //Serial1.print("Cylon L E D Testing.\n");
     Serial.println("cylon LED testing...");
-  cylon(15);
+  cylon(8);
   //delay(7000); //don't know
   while(digitalRead(23));
   delay(500);
@@ -317,16 +333,17 @@ delay(3000);
     song = 2;
   Serial3.write(song);
   while(digitalRead(25)) {
-  	delay(7000);
+  	delay(15000);
   	};
   //while(digitalRead(25));
   //delay(7500);
   while(digitalRead(23));
     song = 3;
   Serial3.write(song);
+  Serial1.print(" \n");
   Serial1.print("with my friends C 3 P O and R 2 D 2\n");
   Serial.println("with my friends C 3 P O and R 2 D 2");
-  delay(4000);
+  delay(3000);
   while(digitalRead(23));
   while(digitalRead(25)) {
   delay(3000);
@@ -353,13 +370,13 @@ delay(3000);
   Serial.println("Where's my Blaster.....");
   delay(750);
   song = 5;
-  	left(90);
+  	//left(90);
 	 Serial3.write(song);
   //blaster LEDs
   ledup();
-  	reverse(5);
-	right(90);
-  ledup();
+  	//reverse(5);
+	//right(90);
+  //ledup();
   while(digitalRead(23));
   Serial1.print("Did I get him?   Oh I think I just scared him off...\n");
   Serial.println("Did I get him?   OH I think I just scared him off....");
@@ -1373,6 +1390,172 @@ void starwarsplay() {
 starwarsplay();
 }
 
+byte decToBcd(byte val)
+{
+  return( (val/10*16) + (val%10) );
+}
+// Convert binary coded decimal to normal decimal numbers
+byte bcdToDec(byte val)
+{
+  return( (val/16*10) + (val%16) );
+}
+
+void setDS3231time(byte second, byte minute, byte hour, byte dayOfWeek, byte
+dayOfMonth, byte month, byte year)
+{
+  // sets time and date data to DS3231
+  Wire.beginTransmission(DS3231_I2C_ADDRESS);
+  Wire.write(0); // set next input to start at the seconds register
+  Wire.write(decToBcd(second)); // set seconds
+  Wire.write(decToBcd(minute)); // set minutes
+  Wire.write(decToBcd(hour)); // set hours
+  Wire.write(decToBcd(dayOfWeek)); // set day of week (1=Sunday, 7=Saturday)
+  Wire.write(decToBcd(dayOfMonth)); // set date (1 to 31)
+  Wire.write(decToBcd(month)); // set month
+  Wire.write(decToBcd(year)); // set year (0 to 99)
+  Wire.endTransmission();
+}
+void readDS3231time(byte *second,
+byte *minute,
+byte *hour,
+byte *dayOfWeek,
+byte *dayOfMonth,
+byte *month,
+byte *year)
+{
+  Wire.beginTransmission(DS3231_I2C_ADDRESS);
+  Wire.write(0); // set DS3231 register pointer to 00h
+  Wire.endTransmission();
+  Wire.requestFrom(DS3231_I2C_ADDRESS, 7);
+  // request seven bytes of data from DS3231 starting from register 00h
+  *second = bcdToDec(Wire.read() & 0x7f);
+  *minute = bcdToDec(Wire.read());
+  *hour = bcdToDec(Wire.read() & 0x3f);
+  *dayOfWeek = bcdToDec(Wire.read());
+  *dayOfMonth = bcdToDec(Wire.read());
+  *month = bcdToDec(Wire.read());
+  *year = bcdToDec(Wire.read());
+}
+void displayTime()
+{
+	speak("The Time is. ");
+  byte second, minute, hour, dayOfWeek, dayOfMonth, month, year;
+  // retrieve data from DS3231
+  readDS3231time(&second, &minute, &hour, &dayOfWeek, &dayOfMonth, &month,
+  &year);
+  // send it to the serial monitor
+  Serial.print(hour, DEC);
+  speakint (hour);
+  // convert the byte variable to a decimal number when displayed
+  Serial.print(":");
+  if (minute<10)
+  {
+    Serial.print("0");
+    
+  }
+  Serial.print(minute, DEC);
+  speakint(minute);
+  Serial.print(":");
+  if (second<10)
+  {
+    Serial.print("0");
+    speak("zero ");
+  }
+  Serial.print(second, DEC);
+  Serial.print(" ");
+  
+  switch(dayOfWeek){
+  case 1:
+    Serial.println("Sunday");
+    speak("Sunday ");
+    break;
+  case 2:
+    Serial.println("Monday");
+    speak("Monday ");
+    break;
+  case 3:
+    Serial.println("Tuesday");
+    speak("Tuesday ");
+    break;
+  case 4:
+    Serial.println("Wednesday");
+    speak("Wednesday ");
+    break;
+  case 5:
+    Serial.println("Thursday");
+    speak("Thursday ");
+    break;
+  case 6:
+    Serial.println("Friday");
+    speak("Friday ");
+    break;
+  case 7:
+    Serial.println("Saturday");
+    speak("Saturday ");
+    break;
+  }
+  //Serial.print(month, DEC);
+  //speakint (month);
+  switch(month) {
+  	case 1:
+  	Serial.print("January ");
+  	speak("January ");
+  	break;
+  	case 2:
+  	Serial.print("February ");
+  	speak("February ");
+  	break;
+  	case 3:
+  	Serial.print("March ");
+  	speak("March ");
+  	break;
+  	case 4:
+  	Serial.print("April ");
+  	speak("April ");
+  	break;
+  	case 5:
+  	Serial.print("May ");
+  	speak("May ");
+  	break;
+  	case 6:
+  	Serial.print("June ");
+  	speak("June ");
+  	break;
+  	case 7:
+  	Serial.print("July ");
+  	speak("July ");
+  	break;
+  	case 8:
+  	Serial.print("Auguest ");
+  	speak("Auguest ");
+  	break;
+  	case 9:
+  	Serial.print("September ");
+  	speak("September ");
+  	break;
+  	case 10:
+  	Serial.print("October ");
+  	speak("October ");
+  	break;
+  	case 11:
+  	Serial.print("November ");
+  	speak("November ");
+  	break;
+  	case 12:
+  	Serial.print("December ");
+  	speak("December ");
+  	break;
+  }
+  //Serial.print("/");
+  Serial.print(dayOfMonth, DEC);
+  speakint(dayOfMonth);
+  Serial.print("/");
+  Serial.print(year, DEC);
+  speakint(year);
+  Serial.print(" ");
+}
+
+
 void spin() {
 	left(90);
 	reverse(5);
@@ -1385,5 +1568,31 @@ void spin() {
 	//right(90);
 	//right(90);
 	//reverse(1);
+}
+
+void settime() {
+	delay(500);
+	speak(" ");
+	//while(digitalRead(23));
+	Serial1.print("Set Time? 1 for Yes, 2 for No.\n");
+	delay(500);
+	while(digitalRead(23));
+	int keypress = key();
+	if (keypress == 1) {
+		speak("Enter Hours: ");
+		int hours = multikey();
+		speak("Enter Minutes: ");
+		int minutes = multikey();
+		int seconds = 00;
+		speak("Enter Day");
+		int day = key();
+		speak ("Enter month");
+		int month = multikey();
+		speak("Enter date");
+		int date = multikey();
+		speak("Enter 2 digit Year");
+		int year = multikey();
+		setDS3231time(seconds, minutes, hours, day, date, month, year);
+	}
 }
 
