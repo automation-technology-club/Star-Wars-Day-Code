@@ -209,13 +209,14 @@ delay(3000); //wait for eMIC 2 to come online
   displayTime();
    while(digitalRead(23));
    settime();
-   
+   centermotor();
 } 
 
 void (* resetFunc) (void) = 0;
 
 void loop() 
 {       
+	//centermotor();
 	//displayTime();
 	//spin();
 	//while(1);
@@ -397,6 +398,7 @@ delay(4000);
    delay(500);
   while(digitalRead(25)) { 
   	//droid dance
+  	centermotor();
   	spin();
   	left(45);
   	forward(1);
@@ -635,6 +637,7 @@ return(val2);
 
 void motortest() {
 	
+	centermotor();
 	speak("Test Drive Motor Forward");
 	forward(1);
 	delay(500);
@@ -1596,3 +1599,16 @@ void settime() {
 	}
 }
 
+void centermotor() {
+	
+	Serial.println(digitalRead(2));
+	while(digitalRead(2) != 1) {
+		left(15);
+		
+	}
+	
+	while(digitalRead(2) != 1) {
+		right(15);
+		
+	}
+}
