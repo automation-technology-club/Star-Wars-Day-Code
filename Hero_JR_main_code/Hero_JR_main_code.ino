@@ -9,7 +9,7 @@ Only optional hardware may need to be added.
 Some type of wireless device, a RTC, and a PIR sensor.
 */
 
-/* Code Version 110415.1544 */
+/* Code Version 110515.1449 */
 
 /* Copyright 2015 LeRoy Miller
 This program is free software: you can redistribute it and/or modify
@@ -136,9 +136,9 @@ int stepCount = 0;
 int number;
 int state;
 String command;
-int distance;
+float distance;
 int speed;
-int degree;
+float degree;
 int fl;
 String str; //use this to convert a int to a char for speech.
 
@@ -204,11 +204,11 @@ delay(3000); //wait for eMIC 2 to come online
    myStepper.setSpeed(75);
    randomSeed(light()+ping()+millis());
    
-   // DS3231 seconds, minutes, hours, day, date, month, year
+  // DS3231 seconds, minutes, hours, day, date, month, year
   //setDS3231time(00,05,16,4,4,11,15);
-  displayTime();
-   while(digitalRead(23));
-   settime();
+  //displayTime();
+  // while(digitalRead(23));
+  // settime();
    centermotor();
 } 
 
@@ -227,6 +227,11 @@ Serial3.write(song);
 while(digitalRead(23));
 speak("Welcome to Star Wars Day");
 delay(500);
+while(digitalRead(25)){
+forward(.2);
+delay(500);
+}
+
 while(digitalRead(25));
 song = 1;
 Serial3.write(song);
@@ -265,7 +270,7 @@ Serial3.write(song);
 	while(digitalRead(23));
   delay(4000); //probably longer than test takes
   //while(digitalRead(23));
-  Serial1.print("Testing Light Sensor... No Light Sensor, not saber!");
+  Serial1.print("Testing Light Sensor.");
   while(digitalRead(23));
   lights = light();
 	speak("Current light reading is ");
@@ -284,42 +289,42 @@ delay(4000);
   Serial1.print("Testing L.E.Ds.\n");
   delay(500);
 	led(0);
-	delay(800);
+	delay(500);
 	led(1);
-	delay(800);
+	delay(500);
 	led(2);
-	delay(800);
+	delay(500);
 	led(3);
-	delay(800);
+	delay(500);
 	led(4);
-	delay(800);
+	delay(500);
 	led(5);
-	delay(800);
+	delay(500);
 	led(6);
-	delay(800);
+	delay(500);
 	led(7);
-	delay(800);
+	delay(500);
 	led(0);
-	delay(800);
+	delay(500);
 	led(1);
-	delay(800);
+	delay(500);
 	led(2);
-	delay(800);
+	delay(500);
 	led(3);
-	delay(800);
+	delay(500);
 	led(4);
-	delay(800);
+	delay(500);
 	led(5);
-	delay(800);
+	delay(500);
 	led(6);
-	delay(800);
+	delay(500);
 	led(7);
-	delay(800);
+	delay(500);
   //delay(7000); //probably longer than it takes
   while(digitalRead(23));
   //Serial1.print("Cylon L E D Testing.\n");
     Serial.println("cylon LED testing...");
-  cylon(8);
+  cylon(5);
   //delay(7000); //don't know
   while(digitalRead(23));
   delay(500);
@@ -334,14 +339,14 @@ delay(4000);
     song = 2;
   Serial3.write(song);
   while(digitalRead(25)) {
-  	delay(15000);
+  	delay(25000);
   	};
   //while(digitalRead(25));
   //delay(7500);
   while(digitalRead(23));
     song = 3;
   Serial3.write(song);
-  Serial1.print(" \n");
+  Serial1.println(" ");
   Serial1.print("with my friends C 3 P O and R 2 D 2\n");
   Serial.println("with my friends C 3 P O and R 2 D 2");
   delay(3000);
@@ -395,7 +400,7 @@ delay(4000);
   while(digitalRead(23));
   Serial1.print("I would do my Droid Dancing....\n");
   Serial.println("I'd do my Droid Dancing.....");
-   delay(500);
+   //delay(500);
   while(digitalRead(25)) { 
   	//droid dance
   	centermotor();
@@ -588,7 +593,7 @@ switch (number1) {
 	}
 }
 
-void forward(int distance) {
+void forward(float distance) {
 	digitalWrite(in1, HIGH);
     digitalWrite(in2, LOW);
 //    analogWrite(enA, 255);
@@ -597,7 +602,7 @@ void forward(int distance) {
     digitalWrite(in2, LOW);
 }
 
-void reverse(int distance) {
+void reverse(float distance) {
 	digitalWrite(in1, LOW);
     digitalWrite(in2, HIGH);
  //   analogWrite(enA, 255);
@@ -606,13 +611,13 @@ void reverse(int distance) {
     digitalWrite(in2, LOW);
 }
 
-void left(int degree) {
+void left(float degree) {
 
   if (degree > 90) {speak("Error in Degree"); return;}
   myStepper.step(100*(degree/15));
 }
 
-void right(int degree) {
+void right(float degree) {
 
 if (degree > 90) {speak("Error in Degree"); return;}
   myStepper.step(-100*(degree/15));
@@ -1379,19 +1384,19 @@ int multikey() {
 }
 
 void starwarsplay() {
-	if (swcurrentmillis - swpreviousmillis >= swdelay ) {
-		swpreviousmillis = swcurrentmillis;
-		return; }
-	int keypress = key();
+	while (swcurrentmillis - swpreviousmillis >= swdelay ) {
+			int keypress = key();
 	
 	if (keypress != 14) {
 		Serial3.write(8);
 		while(digitalRead(25));
-		//play random mp3 file
-		}
-
-starwarsplay();
+		 }
 }
+swpreviousmillis = swcurrentmillis;
+		return;
+		
+}
+
 
 byte decToBcd(byte val)
 {
@@ -1563,14 +1568,6 @@ void spin() {
 	left(90);
 	reverse(5);
 	right(90);
-	//right(90);
-	//reverse(1);
-	//left(90);
-	//left(90);
-	//reverse(1);
-	//right(90);
-	//right(90);
-	//reverse(1);
 }
 
 void settime() {
