@@ -9,7 +9,7 @@ Only optional hardware may need to be added.
 Some type of wireless device, a RTC, and a PIR sensor.
 */
 
-/* Code Version 110515.1449 */
+/* Code Version 111115.1302 */
 
 /* Copyright 2015 LeRoy Miller
 This program is free software: you can redistribute it and/or modify
@@ -228,8 +228,21 @@ while(digitalRead(23));
 speak("Welcome to Star Wars Day");
 delay(500);
 while(digitalRead(25)){
-forward(.2);
+forward(.5);
 delay(500);
+reverse(.5);
+delay(500);
+right(45);
+forward(.5);
+delay(300);
+reverse(.5);
+delay(300);
+left(90);
+forward(.5);
+delay(300);
+reverse(.5);
+delay(300);
+right(45);
 }
 
 while(digitalRead(25));
@@ -403,7 +416,7 @@ delay(4000);
    //delay(500);
   while(digitalRead(25)) { 
   	//droid dance
-  	centermotor();
+  	//centermotor();
   	spin();
   	left(45);
   	forward(1);
@@ -415,6 +428,7 @@ delay(4000);
   	delay(300);
   	reverse(1);
   	left(45);
+  	cylon(2);
   };
   
   song = 7;
@@ -427,8 +441,8 @@ delay(4000);
   while(digitalRead(23));
   //Serial1.print("or the E to exit and start over.\n");
   Serial.println("Random Star Wars Sounds From Keypad");
-cylon(10);
-delay(3000);
+//cylon(10);
+//delay(3000);
 swcurrentmillis = millis();
 starwarsplay();
 }                  
@@ -1391,6 +1405,7 @@ void starwarsplay() {
 		Serial3.write(8);
 		while(digitalRead(25));
 		 }
+	if (keypress == 14) {return;}	 
 }
 swpreviousmillis = swcurrentmillis;
 		return;
@@ -1597,15 +1612,25 @@ void settime() {
 }
 
 void centermotor() {
+	int centercount = 0;
 	
 	Serial.println(digitalRead(2));
 	while(digitalRead(2) != 1) {
-		left(15);
-		
+		left(2);
+	centercount = centercount + 2;
+		if (centercount >= 360) {
+			speak ("Error Centering Drive Wheel!");
+			while(digitalRead(23));
+			while(1);
+		}
 	}
 	
-	while(digitalRead(2) != 1) {
-		right(15);
+	//while(digitalRead(2) != 1) {
+	//	right(15);
 		
-	}
+	//}
+	right(90);
+	right(90);
+	right(90);
+	right(2);
 }
