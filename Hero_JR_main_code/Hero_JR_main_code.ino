@@ -9,7 +9,7 @@ Only optional hardware may need to be added.
 Some type of wireless device, a RTC, and a PIR sensor.
 */
 
-/* Code Version 111115.1302 */
+/* Code Version 111215.1936 */
 
 /* Copyright 2015 LeRoy Miller
 This program is free software: you can redistribute it and/or modify
@@ -85,8 +85,8 @@ int lightPin = 0; //analog pin0 for photoresistor
 #define MAX_DISTANCE 200 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm. About 78 Inches
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
 
-int val11; 
-int val2; 
+float val11; 
+float val2; 
 int led0 = 22;
 int led1 = 24;
 int led2 = 26;
@@ -158,7 +158,7 @@ int song;
 unsigned long swdelay = 30000; //used for random sounds
 unsigned long swpreviousmillis = 0;
 unsigned long swcurrentmillis;
-int voltage;
+float voltage;
 	int pings;
 	int lights;
 	
@@ -170,13 +170,7 @@ Serial.begin(9600);
 Serial1.begin(9600); //Serial 1 is used for the eMIC 2 
 Serial3.begin(9600); //mp3 player
 delay(3000); //wait for eMIC 2 to come online
-//Serial1.flush();
-//Serial1.println();
-//Serial1.println("v10"); //set volume to level 10
-//delay(500);
-//Serial1.println("p0"); //set pharser for DECtalk
-//pinMode(52, OUTPUT); //Pin 52 is used to provide 5v to the Sound sensor
-//digitalWrite(52, HIGH); 
+
    pinMode(led0, OUTPUT);
    pinMode(led1, OUTPUT);
    pinMode(led2, OUTPUT);
@@ -185,7 +179,6 @@ delay(3000); //wait for eMIC 2 to come online
    pinMode(led5, OUTPUT);
    pinMode(led6, OUTPUT);
    pinMode(led7, OUTPUT);
-   //pinMode(enA, OUTPUT);
    pinMode(in1, OUTPUT);
    pinMode(in2, OUTPUT);
    digitalWrite(led0, 1);
@@ -196,31 +189,17 @@ delay(3000); //wait for eMIC 2 to come online
    digitalWrite(led5, 1);
    digitalWrite(led6, 1);
    digitalWrite(led7, 1);
-   Serial.println(""); 
-   Serial.println("");
-   Serial.println("Hero Jr Control Program");
-   Serial.println("Ready");
-   Serial.println(">");
+   
    myStepper.setSpeed(75);
    randomSeed(light()+ping()+millis());
-   
-  // DS3231 seconds, minutes, hours, day, date, month, year
-  //setDS3231time(00,05,16,4,4,11,15);
-  //displayTime();
-  // while(digitalRead(23));
-  // settime();
    centermotor();
 } 
 
 void (* resetFunc) (void) = 0;
 
 void loop() 
-{       
-	//centermotor();
-	//displayTime();
-	//spin();
-	//while(1);
-	
+{      
+
 while(digitalRead(25));
 song = 0;
 Serial3.write(song);
@@ -228,79 +207,66 @@ while(digitalRead(23));
 speak("Welcome to Star Wars Day");
 delay(500);
 while(digitalRead(25)){
-forward(.5);
-delay(500);
-reverse(.5);
-delay(500);
+
 right(45);
 forward(.5);
-delay(300);
+delay(1000);
 reverse(.5);
-delay(300);
 left(90);
 forward(.5);
-delay(300);
+delay(1000);
 reverse(.5);
-delay(300);
 right(45);
 }
 
-while(digitalRead(25));
-song = 1;
-Serial3.write(song);
- while(digitalRead(23));
-  Serial1.print("Starting droid maintance mode.\n");
-  Serial.println("Droid Maintaince testing....");
-  while(digitalRead(23));
-  Serial.println("Rebel Music should be playing for this routine.");
- // displayTime();
- // while(digitalRead(23));
- // delay(4000);
-  Serial1.print("Battery Voltage Test....\n");
-  Serial.println("Battery Voltage Test....");
-  voltage = volt();
-  
-  while(digitalRead(23));
+	while(digitalRead(25));
+	song = 1;
+	Serial3.write(song);
+	while(digitalRead(23));
+  	Serial1.print("Starting droid maintance mode.\n");
+  	Serial.println("Droid Maintaince testing....");
+  	while(digitalRead(23));
+  	Serial1.print("Battery Voltage Test....\n");
+  	Serial.println("Battery Voltage Test....");
+  	voltage = volt();
+  	while(digitalRead(23));
 	speak("The current battery voltage is ");
 	delay(4000);
-		while(digitalRead(23));
-	speakint(voltage);
-	//while(digitalRead(23));
+	while(digitalRead(23));
+	Serial1.println(voltage);
+	while(digitalRead(23));
 	speak(" volts. ");
 	while(digitalRead(23));
-  delay(4000); //probably longer than test takes
-  while(digitalRead(23));
-  Serial.println("Ultrasonic Testing.....");
-  Serial1.print("Ultrasonic testing....\n");
-  pings = ping();
-  while(digitalRead(23));
-  delay(4000);
+  	delay(4000); //probably longer than test takes
+  	while(digitalRead(23));
+  	Serial.println("Ultrasonic Testing.....");
+  	Serial1.print("Ultrasonic testing....\n");
+  	pings = ping();
+  	while(digitalRead(23));
+  	delay(4000);
 	speak("Current Distance from closest object is ");
 	while(digitalRead(23));
 	speakint(pings);
-	//while(digitalRead(23));
 	speak(" inches.");
 	while(digitalRead(23));
-  delay(4000); //probably longer than test takes
-  //while(digitalRead(23));
-  Serial1.print("Testing Light Sensor.");
-  while(digitalRead(23));
-  lights = light();
+  	delay(4000); //probably longer than test takes
+  	Serial1.print("Testing Light Sensor.");
+  	while(digitalRead(23));
+  	lights = light();
 	speak("Current light reading is ");
 	while(digitalRead(23));
 	delay(4000);
-speakint(lights);
-while(digitalRead(23));
-delay(4000);
-  //Serial.println("Sound Sensor Testing.... will fail, too much noise");
-  Serial1.print("Testing Drive Motor....\n");
+	speakint(lights);
+	speak(" percent.");
+	while(digitalRead(23));
+	delay(4000);
+	Serial1.print("Testing Drive Motor....\n");
     Serial.println("Drive motor Testing....");
-   motortest();
-   //delay(30000); //about a minute and half
-  while(digitalRead(23));
-  Serial.println("Test L E Ds");
-  Serial1.print("Testing L.E.Ds.\n");
-  delay(500);
+   	motortest();
+    while(digitalRead(23));
+  	Serial.println("Test L E Ds");
+  	Serial1.print("Testing L.E.Ds.\n");
+  	delay(500);
 	led(0);
 	delay(500);
 	led(1);
@@ -333,73 +299,55 @@ delay(4000);
 	delay(500);
 	led(7);
 	delay(500);
-  //delay(7000); //probably longer than it takes
-  while(digitalRead(23));
-  //Serial1.print("Cylon L E D Testing.\n");
+    while(digitalRead(23));
     Serial.println("cylon LED testing...");
-  cylon(5);
-  //delay(7000); //don't know
-  while(digitalRead(23));
-  delay(500);
-  while(digitalRead(25));
+  	cylon(5);
+    while(digitalRead(23));
+  	delay(500);
+  	while(digitalRead(25));
   
   Serial1.print("I am a Hero Junior Robot, and one of my favorite movies\n");
   Serial.println("I am Hero Junior Robot, and one of my favorite movies");
-    while(digitalRead(23));
+  while(digitalRead(23));
   Serial1.print("is Star Wars,  I wish I could fight against the empire.\n ");
   Serial.println("is Star Wars,   I wish I could fight against the empire.");
-    while(digitalRead(23));
-    song = 2;
+  while(digitalRead(23));
+  song = 2;
   Serial3.write(song);
   while(digitalRead(25)) {
-  	delay(25000);
+  delay(25000);
   	};
-  //while(digitalRead(25));
-  //delay(7500);
-  while(digitalRead(23));
-    song = 3;
-  Serial3.write(song);
   Serial1.println(" ");
   Serial1.print("with my friends C 3 P O and R 2 D 2\n");
   Serial.println("with my friends C 3 P O and R 2 D 2");
   delay(3000);
   while(digitalRead(23));
-  while(digitalRead(25)) {
-  delay(3000);
-  };
+  while(digitalRead(25)); 
+  while(digitalRead(23));
+  song = 3;
+  Serial3.write(song);
   while(digitalRead(23));
   Serial1.print("But I must admit,  I am a little afraid of\n");
   Serial.println("But I must admit..... ");
   Serial.println("I am a little afraid of......");
-  
-  delay(500);
   song = 4;
   Serial3.write(song);
-  //backup robot drive backward a little bit
   while(digitalRead(23));
   Serial1.print("Darth Vader...\n");
   Serial.println("Darth Vader....");
-   reverse(1);
-   delay(500);
+  reverse(1);
+  delay(500);
   while(digitalRead(25));
   while(digitalRead(23));
-   //spin around 1 time
-   
-   Serial1.print("Where's my Blaster\n ");
+  Serial1.print("Where's my Blaster\n ");
   Serial.println("Where's my Blaster.....");
   delay(750);
   song = 5;
-  	//left(90);
-	 Serial3.write(song);
-  //blaster LEDs
+  Serial3.write(song);
   ledup();
-  	//reverse(5);
-	//right(90);
-  //ledup();
   while(digitalRead(23));
   Serial1.print("Did I get him?   Oh I think I just scared him off...\n");
   Serial.println("Did I get him?   OH I think I just scared him off....");
-  //move forward a little bit
   forward(1);
   delay(500);
   while(digitalRead(25));
@@ -413,11 +361,8 @@ delay(4000);
   while(digitalRead(23));
   Serial1.print("I would do my Droid Dancing....\n");
   Serial.println("I'd do my Droid Dancing.....");
-   //delay(500);
   while(digitalRead(25)) { 
-  	//droid dance
-  	//centermotor();
-  	spin();
+   	spin();
   	left(45);
   	forward(1);
   	delay(300);
@@ -433,18 +378,15 @@ delay(4000);
   
   song = 7;
   Serial3.write(song);
-    Serial.println("May the Force Be With You....");
+  Serial.println("May the Force Be With You....");
   delay(500);
   while(digitalRead(25));
   while(digitalRead(23));
   Serial1.print("May The Force Be with you.  Hit any key for random sounds.\n");
   while(digitalRead(23));
-  //Serial1.print("or the E to exit and start over.\n");
   Serial.println("Random Star Wars Sounds From Keypad");
-//cylon(10);
-//delay(3000);
-swcurrentmillis = millis();
-starwarsplay();
+  swcurrentmillis = millis();
+  starwarsplay();
 }                  
 
 void speakcmd(char say[]) {
@@ -480,55 +422,35 @@ void singhbd() {
     and probably existed even earlier. None of these early appearances included credits or copyright notices. 
     The Summy Company registered for copyright in 1935, crediting authors Preston Ware Orem and Mrs. R.R. Forman
 */
-	//Serial1.println();
-	//while(Serial1.read() != ':');
-	//delay(500);
-	Serial1.println("s[:phone arpa speak on][:rate 200][:n0][hxae<300,10>piy<300,10>brrrx<600,12>th<100>dey<600,10>tuw<600,15> yu<1200,14>_<300> hxae<300,10>piy<300,10>brrrx<600,12>th<100>dey<600,10> tuw<600,17>yu<1200,15>_<300> hxae<300,10>piy<300,10>brrrx<600,22>th<100>dey<600,19> _<150>_<300>hxae<300,20>piy<300,20>brrrx<600,19>th<100>dey<600,15> tuw<600,17> yu<1200,15>][:n0]");
-	//ledmouth();
-	//Serial1.println();
-//while(Serial1.read() != ':');
+
+	Serial1.println("[:phone arpa speak on][:rate 200][:n0][hxae<300,10>piy<300,10>brrrx<600,12>th<100>dey<600,10>tuw<600,15> yu<1200,14>_<300> hxae<300,10>piy<300,10>brrrx<600,12>th<100>dey<600,10> tuw<600,17>yu<1200,15>_<300> hxae<300,10>piy<300,10>brrrx<600,22>th<100>dey<600,19> _<150>_<300>hxae<300,20>piy<300,20>brrrx<600,19>th<100>dey<600,15> tuw<600,17> yu<1200,15>][:n0]");
+
 	delay(500);
 
 }
 
 void speak(char say[]) {
 
-	//Serial1.println();
-	//while(Serial1.read() != ':') {delay(1);}
-	//delay(500);
-	//Serial1.print("s");
+	
 	Serial1.println(say);
 while(digitalRead(23)) {	
 	ledmouth();
 }
-//	Serial1.println();
-//	while(Serial1.read() != ':') {delay(1);}
-//	delay(500);
+
 }
 
 void speakint(int say) {
- 
-	//Serial1.println();
-	//while(Serial1.read() != ':') {delay(1);}
-	//delay(500);
-	//Serial1.print("s");
-	Serial1.println(say);
+ 	Serial1.println(say);
 	while(digitalRead(23)) {
   	ledmouth();
 }
-//	Serial1.println();
- //   while(Serial1.read() != ':') {delay(1);}
-//	delay(500);
+
 }
 
 int listen() {
-	//delay(1000);
+	
 	Serial.println("Listen Subroutine!");
-	/*while(digitalRead(53) != 0) {
-		delay(100);
-	}
-	Serial.println("Sound Detected! Return");
-	*/
+	
 	//wait for about 15 seconds and move on
 	for (int waiting=0; waiting <= 7000; waiting++) {
 	sound = digitalRead(53);
@@ -537,7 +459,7 @@ int listen() {
 		return(1);
 			}
 			Serial.println(waiting);
-	//delay(250);		
+	
 		}
 		return(0);
 }
@@ -610,7 +532,6 @@ switch (number1) {
 void forward(float distance) {
 	digitalWrite(in1, HIGH);
     digitalWrite(in2, LOW);
-//    analogWrite(enA, 255);
     delay(1000*distance); //how long the motor should be left on 
     digitalWrite(in1, LOW);
     digitalWrite(in2, LOW);
@@ -619,7 +540,6 @@ void forward(float distance) {
 void reverse(float distance) {
 	digitalWrite(in1, LOW);
     digitalWrite(in2, HIGH);
- //   analogWrite(enA, 255);
     delay(1000*distance); //how long the motor should be left on
     digitalWrite(in1, LOW);
     digitalWrite(in2, LOW);
@@ -641,17 +561,23 @@ int light() {
 	int photor = analogRead(lightPin);
 	Serial.println(photor);
 	delay(50);
-	return(photor);
+	return(map(photor,-1,1024,100,0));
 }
 
-int volt() {
+float volt() {
 float temp;       
 val11=analogRead(1);
 temp=val11/4;       
-val11=(int)temp;       
+val11=temp;       
 val2=((val11)/10);
-Serial.println(val2);          
+Serial.print("val2: ");
+Serial.println(val2);
+Serial.print("val11: ");
+Serial.println(val11);
+Serial.print("temp: ");
+Serial.println(temp);
 return(val2);
+
 }
 
 void motortest() {
@@ -663,7 +589,7 @@ void motortest() {
 	speak("Test Drive Motor Reverse");
 	reverse(1);
 	delay(500);
-	speak("Test Turn left 90 degrees");
+	speak("Test Turn left");
 	right(90);
 	delay(500);
 	forward(1);
@@ -673,7 +599,7 @@ void motortest() {
 	delay(500);
 	left(90);
 	delay(500);
-	speak("Test Turn Right 90 degrees");
+	speak("Test Turn Right");
 	left(90);
 	delay(500);
 	forward(1);
@@ -748,21 +674,17 @@ void cylon(int times) {
    digitalWrite(led5, state5);
    digitalWrite(led6, state6);
    digitalWrite(led7, state7);
-   //Serial.println(">");
+   
 }
 
 void credit() {
 	
 	speak("I am a Heath Kit Hero Junior Robot, I came online on March ninth 20 fifteen");
-		Serial1.println();
-	while(Serial1.read() != ':');
-	delay(500);
-//	speak(" on March ninth 20 fifteen");
+	while(digitalRead(23));
 	speak("at 6:09 pm eastern time");
-		Serial1.println();
-	while(Serial1.read() != ':');
-	delay(500);
+	while(digitalRead(23));
 	speak("I was restored by LeRoy Miller, using modern electronic hardware.");
+	while(digitalRead(23));
 }
 
 void rhyme1() {
@@ -1398,7 +1320,7 @@ int multikey() {
 }
 
 void starwarsplay() {
-	while (swcurrentmillis - swpreviousmillis >= swdelay ) {
+	while (swcurrentmillis + millis() >= swdelay ) {
 			int keypress = key();
 	
 	if (keypress != 14) {
