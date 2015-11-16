@@ -208,6 +208,9 @@ speak("Welcome to Star Wars Day");
 delay(500);
 while(digitalRead(25));
 
+song = 3; //r2d2 sounds
+  Serial3.write(song);
+  while(digitalRead(25));
 
 	while(digitalRead(25));
 	song = 1; //rebel theme music 
@@ -297,7 +300,10 @@ while(digitalRead(25));
   	delay(500);
   	while(digitalRead(25));
   
-  
+  song = 3; //r2d2 sounds
+  Serial3.write(song);
+  while(digitalRead(25));
+  delay(5000);
  
   //Timing issues with this area
   song = 2; //imperial theme song 37 seconds
@@ -314,23 +320,23 @@ while(digitalRead(25));
  // Serial1.print("with Cee three Pee Oh and Ree two Dee two\n");
   //Serial.println("with C3PO and R2D2");
   while(digitalRead(23));
-  //delay(5000);
+  delay(5000);
   song = 3; //r2d2 sounds
   Serial3.write(song);
   while(digitalRead(25));
-  delay(R7000); 
+  delay(7000); 
   
   //delay(35000);
   //while(digitalRead(25)); 
   
   while(digitalRead(23));
-  Serial1.print("But I must admit, I am a little afraid of\n");
-  Serial.println("But I must admit.....I am a little afraid of......");
+  Serial1.print("Look Out it is\n");
+  Serial.println("Look Out it is.");
   song = 4; //darth vader breathing 4 seconds
   Serial3.write(song);
   while(digitalRead(23));
-  Serial1.print("Darth Vader...\n");
-  Serial.println("Darth Vader....");
+  Serial1.print("Darth Vader\n");
+  Serial.println("Darth Vader.");
   reverse(1);
   delay(500);
   while(digitalRead(25));
@@ -343,6 +349,7 @@ while(digitalRead(25));
   ledup();
   while(digitalRead(23));
   while(digitalRead(25));
+  delay(750);
   Serial1.print("Maybe I should use my light saber\n");
   Serial.println("Maybe I should use my light saber.");
   song = 9; //green light saber up, pulse, down sound effect
@@ -359,6 +366,11 @@ while(digitalRead(25));
   
   delay(4000);
   
+  song = 3; //r2d2 sounds
+  Serial3.write(song);
+  while(digitalRead(25));
+  
+  delay(5000);
   
   song = 6; //cantina bar music droid dancing, light saber disco
   Serial3.write(song);
@@ -382,6 +394,12 @@ while(digitalRead(25));
   	left(45);
   	//cylon(2);
   };
+  
+  song = 3; //r2d2 sounds
+  Serial3.write(song);
+  while(digitalRead(25));
+  
+  delay(7000);
   
   song = 7; //may the force be with you
   Serial3.write(song);
