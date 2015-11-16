@@ -9,7 +9,7 @@ Only optional hardware may need to be added.
 Some type of wireless device, a RTC, and a PIR sensor.
 */
 
-/* Code Version 111215.1936 */
+/* Code Version 111515.2020 */
 
 /* Copyright 2015 LeRoy Miller
 This program is free software: you can redistribute it and/or modify
@@ -82,7 +82,7 @@ int lightPin = 0; //analog pin0 for photoresistor
 
 #define TRIGGER_PIN  13  // Arduino pin tied to trigger pin on the ultrasonic sensor.
 #define ECHO_PIN     12  // Arduino pin tied to echo pin on the ultrasonic sensor.
-#define MAX_DISTANCE 200 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm. About 78 Inches
+#define MAX_DISTANCE 500 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm. About 78 Inches
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
 
 float val11; 
@@ -201,26 +201,16 @@ void loop()
 {      
 
 while(digitalRead(25));
-song = 0;
+song = 0; //starwars openning title //red lightsaber pulsing
 Serial3.write(song);
 while(digitalRead(23));
 speak("Welcome to Star Wars Day");
 delay(500);
-while(digitalRead(25)){
+while(digitalRead(25));
 
-right(45);
-forward(.5);
-delay(1000);
-reverse(.5);
-left(90);
-forward(.5);
-delay(1000);
-reverse(.5);
-right(45);
-}
 
 	while(digitalRead(25));
-	song = 1;
+	song = 1; //rebel theme music 
 	Serial3.write(song);
 	while(digitalRead(23));
   	Serial1.print("Starting droid maintance mode.\n");
@@ -267,70 +257,72 @@ right(45);
   	Serial.println("Test L E Ds");
   	Serial1.print("Testing L.E.Ds.\n");
   	delay(500);
-	led(0);
-	delay(500);
-	led(1);
-	delay(500);
-	led(2);
-	delay(500);
-	led(3);
-	delay(500);
-	led(4);
-	delay(500);
-	led(5);
-	delay(500);
-	led(6);
-	delay(500);
-	led(7);
-	delay(500);
-	led(0);
-	delay(500);
-	led(1);
-	delay(500);
-	led(2);
-	delay(500);
-	led(3);
-	delay(500);
-	led(4);
-	delay(500);
-	led(5);
-	delay(500);
-	led(6);
-	delay(500);
-	led(7);
-	delay(500);
+	//led(0);
+	//delay(500);
+	//led(1);
+	//delay(500);
+	//led(2);
+	//delay(500);
+	//led(3);
+	//delay(500);
+	//led(4);
+	//delay(500);
+	//led(5);
+	//delay(500);
+	//led(6);
+	//delay(500);
+	//led(7);
+	//delay(500);
+	//led(0);
+	//delay(500);
+	//led(1);
+	//delay(500);
+	//led(2);
+	//delay(500);
+	//led(3);
+	//delay(500);
+	//led(4);
+	//delay(500);
+	//led(5);
+	//delay(500);
+	//led(6);
+	//delay(500);
+	//led(7);
+	//delay(500);
+	
     while(digitalRead(23));
     Serial.println("cylon LED testing...");
-  	cylon(5);
+  	cylon(8); //was 5
     while(digitalRead(23));
   	delay(500);
   	while(digitalRead(25));
   
+  //Timing issues with this area
   Serial1.print("I am a Hero Junior Robot, and one of my favorite movies\n");
   Serial.println("I am Hero Junior Robot, and one of my favorite movies");
   while(digitalRead(23));
   Serial1.print("is Star Wars,  I wish I could fight against the empire.\n ");
   Serial.println("is Star Wars,   I wish I could fight against the empire.");
   while(digitalRead(23));
-  song = 2;
-  Serial3.write(song);
-  while(digitalRead(25)) {
-  delay(25000);
-  	};
-  Serial1.println(" ");
   Serial1.print("with my friends C 3 P O and R 2 D 2\n");
-  Serial.println("with my friends C 3 P O and R 2 D 2");
-  delay(3000);
+  Serial.println("with my friends C3PO and R2D2");
   while(digitalRead(23));
-  while(digitalRead(25)); 
-  while(digitalRead(23));
-  song = 3;
+  delay(2000);
+  song = 3; //r2d2 sounds
   Serial3.write(song);
+  while(digitalRead(25));
+  delay(5000); 
+  song = 2; //imperial theme song 37 seconds
+  Serial3.write(song);
+  while(digitalRead(25));
+  
+  while(digitalRead(25)); 
+  
   while(digitalRead(23));
   Serial1.print("But I must admit,  I am a little afraid of\n");
   Serial.println("But I must admit..... ");
   Serial.println("I am a little afraid of......");
-  song = 4;
+  song = 4; //darth vader breathing 4 seconds
   Serial3.write(song);
   while(digitalRead(23));
   Serial1.print("Darth Vader...\n");
@@ -342,18 +334,27 @@ right(45);
   Serial1.print("Where's my Blaster\n ");
   Serial.println("Where's my Blaster.....");
   delay(750);
-  song = 5;
+  song = 5; //blaster sound effects leds for blaster
   Serial3.write(song);
   ledup();
   while(digitalRead(23));
-  Serial1.print("Did I get him?   Oh I think I just scared him off...\n");
-  Serial.println("Did I get him?   OH I think I just scared him off....");
+  
+  Serial1.print("Maybe I should use my light saber\n");
+  Serial.println("Maybe I should use my light saber.");
+  song = 9; //green light saber up, pulse, down sound effect
+  while (digitalRead(23));
+  while (digitalRead(25));
+  
+  Serial1.print("Oh I think I just scared him off...\n");
+  Serial.println("OH I think I just scared him off....");
   forward(1);
   delay(500);
   while(digitalRead(25));
+  while(digitalRead(23));
   
   delay(4000);
-  song = 6;
+  
+  song = 6; //cantina bar music droid dancing, light saber disco
   Serial3.write(song);
   while(digitalRead(23));
   Serial1.print("Look it's The Cantina Bar - I wish Droids where alound in there...\n");
@@ -365,18 +366,18 @@ right(45);
    	spin();
   	left(45);
   	forward(1);
-  	delay(300);
+  	delay(100);
   	reverse(1);
   	right(45);
   	right(45);
   	forward(1);
-  	delay(300);
+  	delay(100);
   	reverse(1);
   	left(45);
-  	cylon(2);
+  	//cylon(2);
   };
   
-  song = 7;
+  song = 7; //may the force be with you
   Serial3.write(song);
   Serial.println("May the Force Be With You....");
   delay(500);

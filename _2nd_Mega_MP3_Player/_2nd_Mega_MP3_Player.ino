@@ -8,21 +8,16 @@
 #include <Fat16.h>
 #include <Fat16Util.h>
 #include "newSDLib.h"
-#include <Adafruit_NeoPixel.h>
 
-int PIN = 49;
-int totalLEDs = 30;
-int ledFadeTime = 5;
 int song;
 int isplaying;
-
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(totalLEDs, PIN, NEO_GRB + NEO_KHZ800);
 
 void setup()
 {
   Serial.begin(9600);
   Serial2.begin(9600);
-    
+  Serial3.begin(9600); //used to talk to light saber 
+  
   InitSPI();
   InitIOForVs10xx();
   InitIOForKeys();
@@ -35,11 +30,9 @@ void setup()
 
 
 pinMode(23, OUTPUT); //track playing
+pinMode(25, OUTPUT);
 
 randomSeed(382873);
-
- strip.begin();
- strip.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -69,10 +62,13 @@ int changetrack() {
   digitalWrite(23, HIGH);
   switch (song) {
     case 0:
+    digitalWrite(25, HIGH);
+    Serial3.write(7);
     while(playFile("starwars.mp3")); //44 seconds.
      isplaying = 0;
   Serial1.write(isplaying);
   digitalWrite(23, LOW);
+  digitalWrite(25, LOW);
   
     Serial.println("Star Wars Done.");
     break;
@@ -121,13 +117,13 @@ int changetrack() {
     Serial.println("Blaster Done");
     break;
     case 6:
-    do {
-      discoleds(ledFadeTime);
-    } while(playFile("cantina.mp3")); //2 mintues 47 seconds
-     saberoff();
+     Serial3.write(5);
+     digitalWrite(25, HIGH);
+     while(playFile("cantina.mp3")); //2 mintues 47 seconds
      isplaying = 0;
   Serial1.write(isplaying);
   digitalWrite(23, LOW);
+  digitalWrite(25, LOW);
     Serial.println("Dance Break Done!");
     break;
     case 7:
@@ -153,16 +149,16 @@ int changetrack() {
     }
   case 9:
   {
+    Serial3.write(6);
+    digitalWrite(25, HIGH);
   Serial.println("Light Saber");
-  saberon(0, 255, 0, ledFadeTime);
   while(playFile("saberon.mp3") );
-  for (int xx = 0; xx > 20; xx++) {
-  rgbFadeInAndOut(0, 255, 0, ledFadeTime); //green
   while(playFile("saberhum.mp3") );
-  }
-	saberoff();
-	while(playFile("saberoff.mp3"));
+  delay(300);
+  while(playFile("saberhum.mp3"));
+  while(playFile("saberoff.mp3"));
 	digitalWrite(23, LOW);
+    digitalWrite(25, LOW);
 	break;
   }
   }
@@ -170,67 +166,7 @@ int changetrack() {
    isplaying = 0;
   Serial1.write(isplaying);
   digitalWrite(23, LOW);
-}
-
-void rgbFadeInAndOut(uint8_t red, uint8_t green, uint8_t blue, uint8_t wait) {
- strip.setPixelColor(0, 255, 0,0);
-  for(uint8_t b = 75; b <255; b++) {
-     for(uint8_t i=8; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, red * b/255, green * b/255, blue * b/255);
-     }
-
-     strip.show();
-     delay(wait);
-  };
-
-  for(uint8_t b=255; b > 75; b--) {
-     for(uint8_t i = 8; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, red * b/255, green * b/255, blue * b/255);
-     }
-     strip.show();
-     delay(wait);
-  };
-};
-
-void saberon(uint8_t red, uint8_t green, uint8_t blue, uint8_t wait) {
-	for (uint8_t i = 8; i < strip.numPixels(); i++) {
-		strip.setPixelColor(i, red, green, blue);
-		strip.show();
-		delay(25);
-	}
-}
-
-void saberoff() {
-	for (uint8_t i = strip.numPixels(); i > 7; i--) {
-		strip.setPixelColor(i, 0, 0, 0);
-		strip.show();
-		delay(25);
-	}
-}
-
-void discoleds(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
-    for(i=8; i< strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-uint32_t Wheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
-    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if(WheelPos < 170) {
-    WheelPos -= 85;
-    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;
-  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  digitalWrite(25, LOW);
 }
 
 
