@@ -192,7 +192,7 @@ delay(3000); //wait for eMIC 2 to come online
    
    myStepper.setSpeed(75);
    randomSeed(light()+ping()+millis());
-   centermotor();
+ //  centermotor();
 } 
 
 void (* resetFunc) (void) = 0;
@@ -297,31 +297,35 @@ while(digitalRead(25));
   	delay(500);
   	while(digitalRead(25));
   
+  
+ 
   //Timing issues with this area
-  Serial1.print("I am a Hero Junior Robot, and one of my favorite movies\n");
-  Serial.println("I am Hero Junior Robot, and one of my favorite movies");
-  while(digitalRead(23));
-  Serial1.print("is Star Wars,  I wish I could fight against the empire.\n ");
-  Serial.println("is Star Wars,   I wish I could fight against the empire.");
-  while(digitalRead(23));
-  Serial1.print("with my friends C 3 P O and R 2 D 2\n");
-  Serial.println("with my friends C3PO and R2D2");
-  while(digitalRead(23));
-  delay(2000);
-  song = 3; //r2d2 sounds
-  Serial3.write(song);
-  while(digitalRead(25));
-  delay(5000); 
   song = 2; //imperial theme song 37 seconds
   Serial3.write(song);
   while(digitalRead(25));
+  Serial1.print("I am a Hero Junior Robot, and one of my favorite movies\n");
+  Serial.println("I am Hero Junior Robot, and one of my favorite movies");
+  //while(digitalRead(23));
+  Serial1.print("is Star Wars,  I wish I could fight against the empire.\n");
+  Serial.println("is Star Wars,   I wish I could fight against the empire.");
+  //while(digitalRead(23));
+  //Serial1.println(" ");
+  //delay(1000);
+ // Serial1.print("with Cee three Pee Oh and Ree two Dee two\n");
+  //Serial.println("with C3PO and R2D2");
+  while(digitalRead(23));
+  //delay(5000);
+  song = 3; //r2d2 sounds
+  Serial3.write(song);
+  while(digitalRead(25));
+  delay(R7000); 
   
-  while(digitalRead(25)); 
+  //delay(35000);
+  //while(digitalRead(25)); 
   
   while(digitalRead(23));
-  Serial1.print("But I must admit,  I am a little afraid of\n");
-  Serial.println("But I must admit..... ");
-  Serial.println("I am a little afraid of......");
+  Serial1.print("But I must admit, I am a little afraid of\n");
+  Serial.println("But I must admit.....I am a little afraid of......");
   song = 4; //darth vader breathing 4 seconds
   Serial3.write(song);
   while(digitalRead(23));
@@ -338,13 +342,14 @@ while(digitalRead(25));
   Serial3.write(song);
   ledup();
   while(digitalRead(23));
-  
+  while(digitalRead(25));
   Serial1.print("Maybe I should use my light saber\n");
   Serial.println("Maybe I should use my light saber.");
   song = 9; //green light saber up, pulse, down sound effect
+  Serial3.write(song);
   while (digitalRead(23));
   while (digitalRead(25));
-  
+  delay(1000);
   Serial1.print("Oh I think I just scared him off...\n");
   Serial.println("OH I think I just scared him off....");
   forward(1);
@@ -353,6 +358,7 @@ while(digitalRead(25));
   while(digitalRead(23));
   
   delay(4000);
+  
   
   song = 6; //cantina bar music droid dancing, light saber disco
   Serial3.write(song);
@@ -388,6 +394,7 @@ while(digitalRead(25));
   Serial.println("Random Star Wars Sounds From Keypad");
   swcurrentmillis = millis();
   starwarsplay();
+  
 }                  
 
 void speakcmd(char say[]) {
