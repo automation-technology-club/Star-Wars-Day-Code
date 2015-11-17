@@ -64,9 +64,14 @@ int changetrack() {
     case 0:
     digitalWrite(25, HIGH);
     Serial3.write(7);
+    while(playFile("saberon.mp3"));
+    delay(200);
     while(playFile("starwars.mp3")); //44 seconds.
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(25, LOW);
+  delay(300);
+  while(playFile("saberoff.mp3"));
   digitalWrite(23, LOW);
   digitalWrite(25, LOW);
   
@@ -119,11 +124,18 @@ int changetrack() {
     case 6:
      Serial3.write(5);
      digitalWrite(25, HIGH);
+     while(playFile("saberon.mp3"));   //added for testing Nov 17 without this it works great
+     delay(1000); //added
      while(playFile("cantina.mp3")); //2 mintues 47 seconds
      isplaying = 0;
   Serial1.write(isplaying);
+  digitalWrite(23, LOW); //added for testing
+  digitalWrite(25, LOW);  //added for testing Nov 17 without this it works great
+  delay(300); //added for testing
+  while(playFile("saberoff.mp3")); //added for testing Nov 17 without this it works great
   digitalWrite(23, LOW);
   digitalWrite(25, LOW);
+  
     Serial.println("Dance Break Done!");
     break;
     case 7:
@@ -156,6 +168,8 @@ int changetrack() {
   while(playFile("saberhum.mp3") );
   delay(300);
   while(playFile("saberhum.mp3"));
+  digitalWrite(25,LOW);
+  delay(300);  
   while(playFile("saberoff.mp3"));
 	digitalWrite(23, LOW);
     digitalWrite(25, LOW);
