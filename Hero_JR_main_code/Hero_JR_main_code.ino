@@ -9,7 +9,7 @@ Only optional hardware may need to be added.
 Some type of wireless device, a RTC, and a PIR sensor.
 */
 
-/* Code Version 111515.2020 */
+/* Code Version 111815.2247 */
 
 /* Copyright 2015 LeRoy Miller
 This program is free software: you can redistribute it and/or modify
@@ -1529,7 +1529,7 @@ void displayTime()
 
 void spin() {
 	left(90);
-	reverse(5);
+	reverse(4.5);
 	right(90);
 }
 
